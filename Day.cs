@@ -21,13 +21,11 @@ public abstract class Day : IDay
     
     public abstract int SolvePartTwo();
 
-    public virtual ExecutionMode Mode => ExecutionMode.Default;
-    
     protected abstract string GetTestInput(int? part = null);
 
-    protected void TestOut(string message)
+    protected void DebugOut(string message)
     {
-        if (this.Mode == ExecutionMode.Test)
+        if (ExecutionContext.Mode == ExecutionMode.Debug)
         {
             Console.WriteLine(message);
         }
@@ -35,14 +33,14 @@ public abstract class Day : IDay
     
     protected string[] GetInputLines(int? part = null)
     {
-        return this.Mode == ExecutionMode.Default
+        return ExecutionContext.Mode == ExecutionMode.Default
             ? GetInput(part, File.ReadAllLines)
             : GetTestInput().Split("\n", StringSplitOptions.TrimEntries);
     }
 
     protected string GetInput(int? part = null)
     {
-        return this.Mode == ExecutionMode.Default
+        return ExecutionContext.Mode == ExecutionMode.Default
             ? GetInput(part, File.ReadAllText)
             : GetTestInput();
     }

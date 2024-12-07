@@ -141,7 +141,7 @@ public class Day6 : Day
         var guard = new Guard(this.lab, this.start);
         while (guard.TryMove())
         {
-            this.TestOut(guard.ToString());
+            this.DebugOut(guard.ToString());
         }
 
         return guard.DistinctPositionsVisited;
@@ -166,7 +166,7 @@ public class Day6 : Day
                 {
                     if (HasLoop())
                     {
-                        this.TestOut($"Potential obstruction at {potentialObstruction} causes a loop.");
+                        this.DebugOut($"Potential obstruction at {potentialObstruction} causes a loop.");
                         count++;
                     }
                     

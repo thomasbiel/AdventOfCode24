@@ -59,7 +59,7 @@ public class Day5 : Day
                 var previous = pages[j];
                 if (order.Any(o => o.Item2 == previous))
                 {
-                    this.TestOut($"Update {ListPages(pages)} is invalid");
+                    this.DebugOut($"Update {ListPages(pages)} is invalid");
                     return false;
                 }
             }
@@ -82,7 +82,7 @@ public class Day5 : Day
             {
                 VerifyUpdatePageCount(pages);
                 var ordered = pages.OrderBy(p => p, comparer).ToArray();
-                this.TestOut($"{ListPages(pages)} => {ListPages(ordered)}");
+                this.DebugOut($"{ListPages(pages)} => {ListPages(ordered)}");
                     
                 var index = (ordered.Length + 1) / 2 - 1;
                 sum += ordered[index];
