@@ -136,7 +136,7 @@ public class Day6 : Day
         this.lab = new Lab(rows - 1, columns - 1, obstructions);
     }
     
-    public override int SolvePartOne()
+    public override object SolvePartOne()
     {
         var guard = new Guard(this.lab, this.start);
         while (guard.TryMove())
@@ -147,7 +147,7 @@ public class Day6 : Day
         return guard.DistinctPositionsVisited;
     }
 
-    public override int SolvePartTwo()
+    public override object SolvePartTwo()
     {
         var safetyThreshold = (this.lab.MaxColumnIndex + this.lab.MaxRowIndex) * 4;
 
@@ -194,19 +194,19 @@ public class Day6 : Day
         }
     }
 
-    //public override ExecutionMode Mode => ExecutionMode.Test;
-
     protected override string GetTestInput(int? part = null)
     {
-        return @"....#.....
-.........#
-..........
-..#.......
-.......#..
-..........
-.#..^.....
-........#.
-#.........
-......#...";
+        return """
+               ....#.....
+               .........#
+               ..........
+               ..#.......
+               .......#..
+               ..........
+               .#..^.....
+               ........#.
+               #.........
+               ......#...
+               """;
     }
 }

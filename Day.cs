@@ -8,19 +8,16 @@ public abstract class Day : IDay
     protected const int PartOne = 1;
     protected const int PartTwo = 2;
     
-    public int Number
+    public abstract object SolvePartOne();
+    
+    public abstract object SolvePartTwo();
+
+    public static int GetNumber(Type type)
     {
-        get
-        {
-            var name = this.GetType().Name;
-            return int.Parse(name[nameof(Day).Length..]);
-        }
+        var name = type.Name;
+        return int.Parse(name[nameof(Day).Length..]);
     }
     
-    public abstract int SolvePartOne();
-    
-    public abstract int SolvePartTwo();
-
     protected abstract string GetTestInput(int? part = null);
 
     protected void DebugOut(string message)
@@ -47,7 +44,8 @@ public abstract class Day : IDay
 
     private T GetInput<T>(int? part, Func<string, T> factory)
     {
-        var path = null == part ? $".\\data\\Day{this.Number}.txt" : $".\\data\\Day{this.Number}_{part}.txt";
+        var number = GetNumber(this.GetType());
+        var path = null == part ? $".\\data\\Day{number}.txt" : $".\\data\\Day{number}_{part}.txt";
         return factory(path);
     }
 }

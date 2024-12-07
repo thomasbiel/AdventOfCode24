@@ -19,7 +19,7 @@ public class Day4 : Day
         this.lineLength = this.lines[0].Length;
     }
 
-    public override int SolvePartOne()
+    public override object SolvePartOne()
     {
         var count = this.Count();
         count += this.CountColumns();
@@ -30,16 +30,18 @@ public class Day4 : Day
 
     protected override string GetTestInput(int? part = null)
     {
-        return @"MMMSXXMASM
-MSAMXMSMSA
-AMXSXMAAMM
-MSAMASMSMX
-XMASAMXAMM
-XXAMMXXAMA
-SMSMSASXSS
-SAXAMASAAA
-MAMMMXMMMM
-MXMXAXMASX";
+        return """
+               MMMSXXMASM
+               MSAMXMSMSA
+               AMXSXMAAMM
+               MSAMASMSMX
+               XMASAMXAMM
+               XXAMMXXAMA
+               SMSMSASXSS
+               SAXAMASAAA
+               MAMMMXMMMM
+               MXMXAXMASX
+               """;
     }
 
     private int CountDiagonals()
@@ -141,7 +143,7 @@ MXMXAXMASX";
 
     private static int Count(string line) => Regex.Count(line, Pattern);
 
-    public override int SolvePartTwo()
+    public override object SolvePartTwo()
     {
         var pattern = "MAS";
         var reversed = "SAM";

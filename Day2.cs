@@ -6,7 +6,7 @@ namespace AdventOfCode;
 
 public class Day2 : Day
 {
-    public override int SolvePartOne() => Solve(PartOne);
+    public override object SolvePartOne() => Solve(PartOne);
 
     private int Solve(int part)
     {
@@ -78,15 +78,17 @@ public class Day2 : Day
         return isSafe;
     }
 
-    public override int SolvePartTwo() => Solve(PartTwo);
+    public override object SolvePartTwo() => Solve(PartTwo);
 
     protected override string GetTestInput(int? part = null)
     {
-        return @"7 6 4 2 1
-1 2 7 8 9
-9 7 6 2 1
-1 3 2 4 5
-8 6 4 4 1
-1 3 6 7 9";
+        return """
+               7 6 4 2 1
+               1 2 7 8 9
+               9 7 6 2 1
+               1 3 2 4 5
+               8 6 4 4 1
+               1 3 6 7 9
+               """;
     }
 }

@@ -25,7 +25,7 @@ public class Day1 : Day
         right.Sort();
     }
     
-    public override int SolvePartOne()
+    public override object SolvePartOne()
     {
         var diff = 0;
         for (var i = 0; i < left.Count; i++)
@@ -36,7 +36,7 @@ public class Day1 : Day
         return diff;
     }
 
-    public override int SolvePartTwo()
+    public override object SolvePartTwo()
     {
         var score = 0;
         for (var i = 0; i < this.left.Count; i++)
@@ -51,11 +51,13 @@ public class Day1 : Day
 
     protected override string GetTestInput(int? part = null)
     {
-        return @"3   4
-4   3
-2   5
-1   3
-3   9
-3   3";
+        return """
+               3   4
+               4   3
+               2   5
+               1   3
+               3   9
+               3   3
+               """;
     }
 }

@@ -2,9 +2,7 @@ namespace AdventOfCode;
 
 public interface IDay
 {
-    int Number { get; }
+    object SolvePartOne();
     
-    int SolvePartOne();
-    
-    int SolvePartTwo();
+    object SolvePartTwo();
 }

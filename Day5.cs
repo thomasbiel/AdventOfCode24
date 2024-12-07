@@ -28,9 +28,7 @@ public class Day5 : Day
         }
     }
     
-    //public override ExecutionMode Mode => ExecutionMode.Test; 
-
-    public override int SolvePartOne()
+    public override object SolvePartOne()
     {
         var sum = 0;
         foreach (var line in updates)
@@ -70,7 +68,7 @@ public class Day5 : Day
 
     private static string ListPages(int[] pages) => string.Join(", ", pages);
 
-    public override int SolvePartTwo()
+    public override object SolvePartTwo()
     {
         var comparer = new PageComparer(this.pageOrder); 
         
@@ -124,33 +122,35 @@ public class Day5 : Day
     
     protected override string GetTestInput(int? part = null)
     {
-        return @"47|53
-97|13
-97|61
-97|47
-75|29
-61|13
-75|53
-29|13
-97|29
-53|29
-61|53
-97|53
-61|29
-47|13
-75|47
-97|75
-47|61
-75|61
-47|29
-75|13
-53|13
+        return """
+               47|53
+               97|13
+               97|61
+               97|47
+               75|29
+               61|13
+               75|53
+               29|13
+               97|29
+               53|29
+               61|53
+               97|53
+               61|29
+               47|13
+               75|47
+               97|75
+               47|61
+               75|61
+               47|29
+               75|13
+               53|13
 
-75,47,61,53,29
-97,61,53,29,13
-75,29,13
-75,97,47,61,53
-61,13,29
-97,13,75,29,47";
+               75,47,61,53,29
+               97,61,53,29,13
+               75,29,13
+               75,97,47,61,53
+               61,13,29
+               97,13,75,29,47
+               """;
     }
 }

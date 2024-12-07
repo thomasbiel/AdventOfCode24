@@ -5,13 +5,13 @@ namespace AdventOfCode;
 
 public class Day3 : Day
 {
-    public override int SolvePartOne()
+    public override object SolvePartOne()
     {
         var memory = this.GetInput();
         return CalculateTotal(memory);
     }
 
-    public override int SolvePartTwo()
+    public override object SolvePartTwo()
     {
         var memory = this.GetInput();
 
