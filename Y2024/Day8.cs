@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 namespace AdventOfCode.Y2024;
 
 [Year(2024)]
-public class Day8 : Day
+public class Day8 : Day<int>
 {
     private record Point(int Column, int Row);
 
@@ -56,9 +56,9 @@ public class Day8 : Day
         this.antennas = set;
     }
 
-    public override object SolvePartOne() => GetAntinodeCount(includeResonances: false);
+    public override int SolvePartOne() => GetAntinodeCount(includeResonances: false);
 
-    public override object SolvePartTwo() => GetAntinodeCount(includeResonances: true);
+    public override int SolvePartTwo() => GetAntinodeCount(includeResonances: true);
 
     protected override string GetTestInput(int? part = null)
     {

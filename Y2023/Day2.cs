@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 namespace AdventOfCode.Y2023;
 
 [Year(2023)]
-public class Day2 : Day
+public class Day2 : Day<int>
 {
     private sealed record CubeSet(int Red, int Green, int Blue)
     {
@@ -56,7 +56,7 @@ public class Day2 : Day
         this.games = list;
     }
     
-    public override object SolvePartOne()
+    public override int SolvePartOne()
     {
         var result = 0;
         foreach (var game in this.games)
@@ -74,7 +74,7 @@ public class Day2 : Day
         return result;
     }
 
-    public override object SolvePartTwo()
+    public override int SolvePartTwo()
     {
         var result = 0;
         foreach (var game in this.games)

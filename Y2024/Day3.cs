@@ -4,15 +4,15 @@ using System.Text.RegularExpressions;
 namespace AdventOfCode.Y2024;
 
 [Year(2024)]
-public class Day3 : Day
+public class Day3 : Day<int>
 {
-    public override object SolvePartOne()
+    public override int SolvePartOne()
     {
         var memory = this.GetInput();
         return CalculateTotal(memory);
     }
 
-    public override object SolvePartTwo()
+    public override int SolvePartTwo()
     {
         var memory = this.GetInput();
 

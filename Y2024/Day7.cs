@@ -6,7 +6,7 @@ using System.Text;
 namespace AdventOfCode.Y2024;
 
 [Year(2024)]
-public class Day7 : Day
+public class Day7 : Day<ulong>
 {
     private sealed record Operation(string Name, Func<ulong, ulong, ulong> Evaluate);
     
@@ -50,9 +50,9 @@ public class Day7 : Day
         equations = list;
     }
 
-    public override object SolvePartOne() => GetTotal([Add, Multiply]);
+    public override ulong SolvePartOne() => GetTotal([Add, Multiply]);
 
-    public override object SolvePartTwo() => GetTotal([Add, Multiply, Concatenate]);
+    public override ulong SolvePartTwo() => GetTotal([Add, Multiply, Concatenate]);
 
     protected override string GetTestInput(int? part = null)
     {

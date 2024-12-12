@@ -1,34 +1,30 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using AdventOfCode.Utilities;
 
 namespace AdventOfCode.Y2024;
 
 [Year(2024)]
-public class Day6 : Day
+public class Day6 : Day<int>
 {
-    private enum Action
-    {
-        Move,
-        Exit
-    }
-    
     private sealed record Point(int Column, int Row);
-    private sealed record Lab(int MaxRowIndex, int MaxColumnIndex, HashSet<Point> Obstructions);
-    private sealed record Move(Point Next, Direction Direction, Action Action = Action.Move);
-    
-    private enum Direction
+
+    private sealed record Lab(int MaxRowIndex, int MaxColumnIndex, IReadOnlySet<Point> Obstructions)
     {
-        Up,
-        Down,
-        Left,
-        Right
+        public bool Contains(Point p)
+        {
+            return p.Column >= 0 && p.Column <= this.MaxColumnIndex && p.Row >= 0 && p.Row <= this.MaxRowIndex;
+        }
     }
+    
+    private sealed record GuardTurn(Point Position, Direction Direction);
     
     private class Guard
     {
-        private static readonly Move LeftTheLab = new(null, Direction.Up, Action.Exit);
-        
         private readonly HashSet<Point> positions = new();
+        private readonly HashSet<GuardTurn> turns = new();
         private readonly Lab lab;
         
         private Point position;
@@ -40,60 +36,42 @@ public class Day6 : Day
             this.MoveTo(start ?? throw new ArgumentNullException(nameof(start)));
         }
 
-        public bool TryMove()
+        public bool? TryMove(Point obstruction = null)
         {
-            var move = this.direction switch
+            var next = this.direction switch
             {
-                Direction.Up => MoveUpOrTurnRight(),
-                Direction.Right => MoveRightOrTurnDown(),
-                Direction.Down => MoveDownOrTurnLeft(),
-                Direction.Left => MoveLeftOrTurnUp(),
-                _ => LeftTheLab
+                Direction.Up => new Point(this.Column, this.Row - 1),
+                Direction.Right => new Point(this.Column + 1, this.Row),
+                Direction.Down => new Point(this.Column, this.Row + 1),
+                Direction.Left => new Point(this.Column - 1, this.Row),
+                _ => throw new ArgumentOutOfRangeException()
             };
 
-            if (move.Action == Action.Exit) return false;
-
-            if (!this.lab.Obstructions.Contains(move.Next))
+            if (!this.lab.Contains(next))
             {
-                this.MoveTo(move.Next);
+                return false;
+            }
+            
+            if (!this.lab.Obstructions.Contains(next) && next != obstruction)
+            {
+                this.MoveTo(next);
                 return true;
             }
-                
-            this.direction = move.Direction;
+            
+            // turn right
+            var turn = (int)this.direction + 1;
+            this.direction = (Direction)(turn % 4);
+            if (!this.turns.Add(new(this.position, this.direction)))
+            {
+                return null; // loop detected
+            }
+            
             return true;
         }
         
         public int DistinctPositionsVisited => this.positions.Count;
 
         public override string ToString() => $"Guard at {this.position} facing {this.direction}";
-
-        private Move MoveLeftOrTurnUp()
-        {
-            if (this.Column == 0) return LeftTheLab;
-            var next = new Point(this.Column - 1, this.Row);
-            return new Move(next, Direction.Up);
-        }
-
-        private Move MoveDownOrTurnLeft()
-        {
-            if (this.Row == this.lab.MaxRowIndex) return LeftTheLab;
-            var next = new Point(this.Column, this.Row + 1);
-            return new Move(next, Direction.Left);
-        }
-
-        private Move MoveRightOrTurnDown()
-        {
-            if (this.Column == this.lab.MaxColumnIndex) return LeftTheLab;
-            var next = new Point(this.Column + 1, this.Row);
-            return new Move(next, Direction.Down);
-        }
-        
-        private Move MoveUpOrTurnRight()
-        {
-            if (this.Row == 0) return LeftTheLab;
-            var next = new Point(this.Column, this.Row - 1);
-            return new Move(next, Direction.Right);
-        }
 
         private int Column => this.position.Column;
         
@@ -137,10 +115,10 @@ public class Day6 : Day
         this.lab = new Lab(rows - 1, columns - 1, obstructions);
     }
     
-    public override object SolvePartOne()
+    public override int SolvePartOne()
     {
         var guard = new Guard(this.lab, this.start);
-        while (guard.TryMove())
+        while (guard.TryMove() == true)
         {
             this.DebugOut(guard.ToString());
         }
@@ -148,50 +126,40 @@ public class Day6 : Day
         return guard.DistinctPositionsVisited;
     }
 
-    public override object SolvePartTwo()
+    public override int SolvePartTwo()
     {
-        var safetyThreshold = (this.lab.MaxColumnIndex + this.lab.MaxRowIndex) * 4;
-
         var count = 0;
-        for (var c = 0; c <= this.lab.MaxColumnIndex; c++)
+        var options = new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount / 2 };
+        Parallel.For(0, this.lab.MaxColumnIndex + 1, options, c =>
         {
-            for (var r = 0; r <= this.lab.MaxColumnIndex; r++)
+            for (var r = 0; r <= this.lab.MaxRowIndex; r++)
             {
                 var potentialObstruction = new Point(c, r);
                 if (potentialObstruction == this.start)
                 {
                     continue;
                 }
-                  
-                if (this.lab.Obstructions.Add(potentialObstruction))
+
+                if (HasLoop(potentialObstruction))
                 {
-                    if (HasLoop())
-                    {
-                        this.DebugOut($"Potential obstruction at {potentialObstruction} causes a loop.");
-                        count++;
-                    }
-                    
-                    this.lab.Obstructions.Remove(potentialObstruction);
+                    this.DebugOut($"Potential obstruction at {potentialObstruction} causes a loop.");
+                    Interlocked.Increment(ref count);
                 }
             }
-        }
+        });
 
         return count;
 
-        bool HasLoop()
+        bool HasLoop(Point obstruction)
         {
             var guard = new Guard(this.lab, this.start);
-            var steps = 0;
-            while (guard.TryMove())
+            var canMove = guard.TryMove(obstruction);
+            while (canMove == true)
             {
-                steps++;
-                if (steps > guard.DistinctPositionsVisited + safetyThreshold)
-                {
-                    return true;
-                }
+                canMove = guard.TryMove(obstruction);
             }
 
-            return false;
+            return canMove == null;
         }
     }
 

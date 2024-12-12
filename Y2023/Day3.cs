@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 namespace AdventOfCode.Y2023;
 
 [Year(2023)]
-public class Day3 : Day
+public class Day3 : Day<int>
 {
     private readonly string[] engineLayout;
     private readonly IReadOnlyList<Symbol> symbols;
@@ -30,7 +30,7 @@ public class Day3 : Day
         this.symbols = list;
     }
     
-    public override object SolvePartOne()
+    public override int SolvePartOne()
     {
         var result = 0;
         for (var row = 0; row < this.engineLayout.Length; row++)
@@ -54,7 +54,7 @@ public class Day3 : Day
         return result;
     }
 
-    public override object SolvePartTwo()
+    public override int SolvePartTwo()
     {
         var result = 0;
         

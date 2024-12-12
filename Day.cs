@@ -3,20 +3,18 @@ using System.IO;
 
 namespace AdventOfCode;
 
-public abstract class Day : IDay
+public abstract class Day<T> : IDay
 {
     protected const int PartOne = 1;
     protected const int PartTwo = 2;
-    
-    public abstract object SolvePartOne();
-    
-    public abstract object SolvePartTwo();
 
-    public static int GetNumber(Type type)
-    {
-        var name = type.Name;
-        return int.Parse(name[nameof(Day).Length..]);
-    }
+    object IDay.SolvePartOne() => this.SolvePartOne();
+    
+    object IDay.SolvePartTwo() => this.SolvePartTwo();
+    
+    public abstract T SolvePartOne();
+    
+    public abstract T SolvePartTwo();
     
     protected abstract string GetTestInput(int? part = null);
 
@@ -42,11 +40,11 @@ public abstract class Day : IDay
             : GetTestInput(part);
     }
 
-    private T GetInput<T>(Func<string, T> factory)
+    private TResult GetInput<TResult>(Func<string, TResult> factory)
     {
         var type = this.GetType();
         var year = YearAttribute.GetYear(type);
-        var day = GetNumber(type);
+        var day = DayOfYear.GetNumber(type);
         return ExecutionContext.LoadInput(year, day, factory);
     }
 }

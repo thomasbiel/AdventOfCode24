@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 namespace AdventOfCode.Y2024;
 
 [Year(2024)]
-public class Day4 : Day
+public class Day4 : Day<int>
 {
     private static readonly int SearchLength = "XMAS".Length;
     private static readonly string Pattern = "(?=(XMAS|SAMX))";
@@ -20,7 +20,7 @@ public class Day4 : Day
         this.lineLength = this.lines[0].Length;
     }
 
-    public override object SolvePartOne()
+    public override int SolvePartOne()
     {
         var count = this.Count();
         count += this.CountColumns();
@@ -144,7 +144,7 @@ public class Day4 : Day
 
     private static int Count(string line) => Regex.Count(line, Pattern);
 
-    public override object SolvePartTwo()
+    public override int SolvePartTwo()
     {
         var pattern = "MAS";
         var reversed = "SAM";

@@ -6,7 +6,7 @@ using System.Linq;
 namespace AdventOfCode.Y2024;
 
 [Year(2024)]
-public class Day5 : Day
+public class Day5 : Day<int>
 {
     private readonly List<(int, int)> pageOrder = new();
     private readonly string[] updates;
@@ -29,7 +29,7 @@ public class Day5 : Day
         }
     }
     
-    public override object SolvePartOne()
+    public override int SolvePartOne()
     {
         var sum = 0;
         foreach (var line in updates)
@@ -69,7 +69,7 @@ public class Day5 : Day
 
     private static string ListPages(int[] pages) => string.Join(", ", pages);
 
-    public override object SolvePartTwo()
+    public override int SolvePartTwo()
     {
         var comparer = new PageComparer(this.pageOrder); 
         

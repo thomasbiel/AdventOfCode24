@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 namespace AdventOfCode.Y2023;
 
 [Year(2023)]
-public class Day1 : Day
+public class Day1 : Day<int>
 {
     private static readonly IReadOnlyDictionary<string, int> translation = new Dictionary<string, int>
     {
@@ -20,10 +20,10 @@ public class Day1 : Day
         { "nine", 9 }
     };
     
-    public override object SolvePartOne() => this.Solve(1, @"[\d]");
+    public override int SolvePartOne() => this.Solve(1, @"[\d]");
 
     // word "digits" may overlap, e.g. "eighthree" -> 83
-    public override object SolvePartTwo() => this.Solve(2, @"(?=([\d]|" + string.Join('|', translation.Keys) + "))");
+    public override int SolvePartTwo() => this.Solve(2, @"(?=([\d]|" + string.Join('|', translation.Keys) + "))");
     
     private int Solve(int part, string pattern)
     {

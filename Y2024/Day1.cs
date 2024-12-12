@@ -5,7 +5,7 @@ using System.Linq;
 namespace AdventOfCode.Y2024;
 
 [Year(2024)]
-public class Day1 : Day
+public class Day1 : Day<int>
 {
     private readonly List<int> left = new();
     private readonly List<int> right = new();
@@ -26,7 +26,7 @@ public class Day1 : Day
         right.Sort();
     }
     
-    public override object SolvePartOne()
+    public override int SolvePartOne()
     {
         var diff = 0;
         for (var i = 0; i < left.Count; i++)
@@ -37,7 +37,7 @@ public class Day1 : Day
         return diff;
     }
 
-    public override object SolvePartTwo()
+    public override int SolvePartTwo()
     {
         var score = 0;
         for (var i = 0; i < this.left.Count; i++)

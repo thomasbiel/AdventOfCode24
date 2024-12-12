@@ -5,9 +5,9 @@ using System.Linq;
 namespace AdventOfCode.Y2024;
 
 [Year(2024)]
-public class Day2 : Day
+public class Day2 : Day<int>
 {
-    public override object SolvePartOne() => Solve(PartOne);
+    public override int SolvePartOne() => Solve(PartOne);
 
     private int Solve(int part)
     {
@@ -79,7 +79,7 @@ public class Day2 : Day
         return isSafe;
     }
 
-    public override object SolvePartTwo() => Solve(PartTwo);
+    public override int SolvePartTwo() => Solve(PartTwo);
 
     protected override string GetTestInput(int? part = null)
     {
